@@ -1,0 +1,67 @@
+rules_version = '2';
+
+// Security model for พอร์ทหุ้น (Portfolio)
+// - Every user can read/write ONLY their own data.
+// - The `usernames` collection is a public username -> email map, required so a
+//   user can resolve their email BEFORE signing in (username login). Only
+//   single-document reads are allowed (no listing/enumeration), and a mapping
+//   may only be created/changed by the account it belongs to.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Public username -> email mapping (pre-auth lookup for username login).
+    match /usernames/{username} {
+      allow get: if true;            // exact-id lookup only
+      allow list: if false;          // never allow enumeration
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn()
+                    && resource.data.uid == request.auth.uid
+                    && request.resource.data.uid == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // User profile document.
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+                    && request.resource.data.email is string
+                    && request.resource.data.usernameLower is string;
+      allow update: if isOwner(uid);
+      allow delete: if false;
+    }
+
+    // Holdings — portfolio/{uid}/holdings/{holdingId}
+    match /portfolio/{uid}/holdings/{holdingId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Transactions — transactions/{uid}/history/{txId}
+    match /transactions/{uid}/history/{txId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Journal — journal/{uid}/notes/{noteId}
+    match /journal/{uid}/notes/{noteId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Watchlist Top 5 — watchlist/{uid}/top5/{itemId}
+    match /watchlist/{uid}/top5/{itemId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
