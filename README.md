@@ -28,6 +28,12 @@
 - **Performance** — รายวัน / สัปดาห์ / เดือน / ปี (กำไรรับรู้แล้ว, ยังไม่รับรู้, เงินทุนสุทธิ)
 - **Journal** — สร้าง / แก้ไข / ลบ / ค้นหา บันทึกการลงทุน
 
+**ราคาเรียลไทม์ (Market)**
+- ดึงราคาหุ้นจริงจาก Yahoo Finance ผ่าน API route ฝั่ง server (ไม่ต้องใช้ API key)
+- **รีเฟรชอัตโนมัติทุก 1 ชั่วโมง** + ปุ่มรีเฟรชเอง พร้อมเวลาอัปเดตล่าสุดและกราฟ sparkline
+- รองรับหุ้นไทย (เติม `.BK` อัตโนมัติ) และหุ้นสหรัฐ · แสดงราคาตามสกุลเงินจริงของตลาด
+- ปุ่ม “อัปเดตราคานี้เข้าพอร์ต” นำราคาล่าสุดไปคำนวณกำไร/ขาดทุนในพอร์ตได้ทันที
+
 **คุณภาพ UX**
 - Loading / Empty / Error states ครบทุกหน้า
 - Validation ทุกฟอร์ม · Responsive ทุกขนาดจอ · รองรับ Dark Mode อัตโนมัติ
@@ -136,12 +142,12 @@ npm run test:watch # รัน tests แบบ watch
 (ความปลอดภัยมาจาก Firebase Auth + Security Rules ไม่ใช่จากการซ่อนค่าเหล่านี้)
 
 ```bash
-NEXT_PUBLIC_FIREBASE_API_KEY=...
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-NEXT_PUBLIC_FIREBASE_APP_ID=...
+NEXT_PUBLIC_FIREBASE_API_KEY="AIzaSyBAgAKmrBfp6Cr38ziW3nZjj4987grpMP4",
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="port-invest-1c371.firebaseapp.com",
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="port-invest-1c371",
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="port-invest-1c371.firebasestorage.app",
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="658991778367",
+NEXT_PUBLIC_FIREBASE_APP_ID="1:658991778367:web:9b947c0b57b673f32d068a",
 ```
 
 ---

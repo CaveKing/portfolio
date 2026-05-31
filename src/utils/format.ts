@@ -28,6 +28,24 @@ export function formatCurrency(
   }).format(amount);
 }
 
+/**
+ * Format money in an arbitrary ISO currency code (e.g. quotes from a market
+ * feed that may return JPY, HKD, …). Falls back gracefully on unknown codes.
+ */
+export function formatMoney(amount: number, currencyCode = "USD"): string {
+  if (!Number.isFinite(amount)) return EM_DASH;
+  try {
+    return new Intl.NumberFormat(currencyCode === "THB" ? "th-TH" : "en-US", {
+      style: "currency",
+      currency: currencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${formatNumber(amount)} ${currencyCode}`;
+  }
+}
+
 /** Always render a leading +/- sign, useful for profit/loss figures. */
 export function formatSignedCurrency(
   amount: number,

@@ -1,6 +1,11 @@
 import type { ComponentType, SVGProps } from "react";
 import { ROUTES } from "@/constants";
-import { BriefcaseIcon, GridIcon, UserIcon } from "@/components/ui/icons";
+import {
+  ActivityIcon,
+  BriefcaseIcon,
+  GridIcon,
+  UserIcon,
+} from "@/components/ui/icons";
 
 export interface NavItem {
   href: string;
@@ -11,6 +16,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { href: ROUTES.dashboard, label: "แดชบอร์ด", icon: GridIcon },
   { href: ROUTES.portfolio, label: "พอร์ต", icon: BriefcaseIcon },
+  { href: ROUTES.market, label: "ราคา", icon: ActivityIcon },
 ];
 
 export const MOBILE_NAV_ITEMS: NavItem[] = [

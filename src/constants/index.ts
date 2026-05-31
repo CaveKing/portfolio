@@ -22,6 +22,7 @@ export const ROUTES = {
   resetPassword: "/reset-password",
   dashboard: "/dashboard",
   portfolio: "/portfolio",
+  market: "/market",
   profile: "/profile",
 } as const;
 
@@ -29,6 +30,7 @@ export const ROUTES = {
 export const PROTECTED_ROUTES: string[] = [
   ROUTES.dashboard,
   ROUTES.portfolio,
+  ROUTES.market,
   ROUTES.profile,
 ];
 
